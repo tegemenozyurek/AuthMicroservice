@@ -27,4 +27,14 @@ public class UserController {
     public User getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }
+
+    @GetMapping("/byEmail/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/isEmailExists/{email}")
+    public Boolean isEmailExists(@PathVariable String email) {
+        return userService.isEmailExists(email);
+    }
 }

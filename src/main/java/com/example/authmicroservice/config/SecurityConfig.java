@@ -18,6 +18,8 @@ public class SecurityConfig {
                         .requestMatchers("/testConnection").permitAll()
                         .requestMatchers("/api/v1/users/all").permitAll()
                         .requestMatchers("/api/v1/users/byId/**").permitAll()
+                        .requestMatchers("/api/v1/users/byEmail/**").permitAll()
+                        .requestMatchers("/api/v1/users/isEmailExists/**").permitAll()
                         .anyRequest().denyAll()
                 );
 

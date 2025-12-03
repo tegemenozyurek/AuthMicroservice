@@ -23,11 +23,19 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Boolean isEmailExists(String email){
+        return userRepository.existsByEmail(email);
+    }
+
     // create user
     // get user by id
-
     // get user by email
     // check if email exists
+
     // activate user (optional)
     // update last login time (optional)
     // save user (internal use)
