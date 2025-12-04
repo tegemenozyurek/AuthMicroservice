@@ -1,11 +1,8 @@
-package com.example.authmicroservice;
+package com.example.authmicroservice.controller;
 
 import com.example.authmicroservice.entity.User;
 import com.example.authmicroservice.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,4 +34,20 @@ public class UserController {
     public Boolean isEmailExists(@PathVariable String email) {
         return userService.isEmailExists(email);
     }
+
+    @PatchMapping("/{id}/activate")
+    public User activateUser(@PathVariable Integer id) {
+        return userService.activateUser(id);
+    }
+
+    @PatchMapping("/{id}/deactivate")
+    public User deactivateUser(@PathVariable Integer id) {
+        return userService.deactivateUser(id);
+    }
+
+    @PatchMapping("/{id}/rename/{newName}")
+    public User renameUser(@PathVariable Integer id, @PathVariable String newName) {
+        return userService.renameUser(id, newName);
+    }
+
 }

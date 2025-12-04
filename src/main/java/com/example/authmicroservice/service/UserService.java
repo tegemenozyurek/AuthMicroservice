@@ -31,6 +31,30 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    public User activateUser(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setIsActive(true);
+        return userRepository.save(user);
+    }
+
+    public User deactivateUser(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setIsActive(false);
+        return userRepository.save(user);
+    }
+
+    public User renameUser(Integer id, String newName) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setFullName(newName);
+        return userRepository.save(user);
+    }
+
+
     // create user
     // get user by id
     // get user by email
@@ -39,5 +63,4 @@ public class UserService {
     // activate user (optional)
     // update last login time (optional)
     // save user (internal use)
-
 }

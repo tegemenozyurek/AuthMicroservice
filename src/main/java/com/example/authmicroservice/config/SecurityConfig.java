@@ -16,10 +16,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/testConnection").permitAll()
-                        .requestMatchers("/api/v1/users/all").permitAll()
-                        .requestMatchers("/api/v1/users/byId/**").permitAll()
-                        .requestMatchers("/api/v1/users/byEmail/**").permitAll()
-                        .requestMatchers("/api/v1/users/isEmailExists/**").permitAll()
+                        .requestMatchers("/api/v1/users/**").permitAll()
                         .anyRequest().denyAll()
                 );
 
