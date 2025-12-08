@@ -30,24 +30,29 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-    @GetMapping("/isEmailExists/{email}")
-    public Boolean isEmailExists(@PathVariable String email) {
-        return userService.isEmailExists(email);
+    /////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/activeUsers")
+    public List<User> getActiveUsers() {
+        return userService.getActiveUsers();
     }
 
-    @PatchMapping("/{id}/activate")
-    public User activateUser(@PathVariable Integer id) {
-        return userService.activateUser(id);
+    @GetMapping("/inactiveUsers")
+    public List<User> getInactiveUsers() {
+        return userService.getInactiveUsers();
     }
 
-    @PatchMapping("/{id}/deactivate")
-    public User deactivateUser(@PathVariable Integer id) {
-        return userService.deactivateUser(id);
+    /////////////////////////////////////////////////////////////////////////
+
+    @PatchMapping("{id}/newPassword/{newPassword}")
+    public User editPassword(@PathVariable Integer id, @PathVariable String newPassword) {
+        return userService.editPassword(id, newPassword);
     }
 
-    @PatchMapping("/{id}/rename/{newName}")
-    public User renameUser(@PathVariable Integer id, @PathVariable String newName) {
-        return userService.renameUser(id, newName);
-    }
+    /////////////////////////////////////////////////////////////////////////
 
+    @PostMapping("/registerLocal")
+    public User registerUser(@RequestBody User user) {
+        return userService.registerLocal(user);
+    }
 }

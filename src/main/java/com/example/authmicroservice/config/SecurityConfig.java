@@ -16,7 +16,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/testConnection").permitAll()
-                        .requestMatchers("/api/v1/users/**").permitAll()
+                        .requestMatchers("/api/v1/users/all").permitAll()
+                        .requestMatchers("/api/v1/users/byId/**").permitAll()
+                        .requestMatchers("/api/v1/users/byEmail/**").permitAll()
+                        .requestMatchers("/api/v1/users/activeUsers").permitAll()
+                        .requestMatchers("/api/v1/users/inactiveUsers").permitAll()
+                        .requestMatchers("/api/v1/users/*/newPassword/*").permitAll()
+                        .requestMatchers("/api/v1/users/registerLocal").permitAll()
+
                         .anyRequest().denyAll()
                 );
 

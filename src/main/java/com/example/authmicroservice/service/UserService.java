@@ -15,6 +15,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /////////////////////////////////////////////////////////////////////////
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -27,40 +29,61 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public Boolean isEmailExists(String email){
-        return userRepository.existsByEmail(email);
+    /////////////////////////////////////////////////////////////////////////
+
+    public List<User> getActiveUsers() {
+        return userRepository.findByIsActive(true);
     }
 
-    public User activateUser(Integer id) {
+    public List<User> getInactiveUsers(){
+        return userRepository.findByIsActive(false);
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    public User editPassword(Integer id, String newPassword){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setIsActive(true);
+        user.setPasswordHash(newPassword);
         return userRepository.save(user);
     }
 
-    public User deactivateUser(Integer id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    /////////////////////////////////////////////////////////////////////////
 
-        user.setIsActive(false);
+    public User registerLocal(User user) {
         return userRepository.save(user);
     }
 
-    public User renameUser(Integer id, String newName) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setFullName(newName);
+    public User registerGoogle(User user) {
+        return user;
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    public User updateUser(User user) {
         return userRepository.save(user);
     }
 
+    public void deleteUser(Integer id) {
+        userRepository.deleteById(id);
+    }
 
-    // create user
-    // get user by id
-    // get user by email
-    // check if email exists
+    /////////////////////////////////////////////////////////////////////////
 
-    // activate user (optional)
-    // update last login time (optional)
-    // save user (internal use)
+
+    // get all users +
+    // get user by id +
+    // get user by email +
+
+    // get active users +
+    // get inactive users +
+
+    // edit password +
+
+    // register local
+    // register google
+
+    // update user
+    // delete user
 }

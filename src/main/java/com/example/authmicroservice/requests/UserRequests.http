@@ -1,0 +1,23 @@
+### Db Controller
+GET http://localhost:8080/testConnection
+
+### UserController - Get all users
+GET http://localhost:8080/api/v1/users/all
+
+### UserController - Get user by id
+GET http://localhost:8080/api/v1/users/byId/1
+
+### UserController - Get user my email
+GET http://localhost:8080/api/v1/users/byEmail/egemen@gmail.com
+
+### UserController - Check if email exists
+GET http://localhost:8080/api/v1/users/isEmailExists/egemen@gmail.com
+
+### UserController - Activate user by id
+PATCH http://localhost:8080/api/v1/users/{{id}}/activate
+
+### UserController - Deactivate user by id
+PATCH http://localhost:8080/api/v1/users/{{id}}/deactivate
+
+### UserController - Rename user by id
+PATCH http://localhost:8080/api/v1/users/{{id}}/rename/{{newName}}
