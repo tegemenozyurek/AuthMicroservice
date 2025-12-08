@@ -21,6 +21,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    ////////////////////////////////////////////////////////////////////////
+
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -73,6 +75,7 @@ public class UserService {
 
 
     // get all users +
+
     // get user by id +
     // get user by email +
 
