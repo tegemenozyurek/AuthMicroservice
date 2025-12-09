@@ -20,8 +20,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     @GetMapping("/byId/{id}")
     public User getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
@@ -46,15 +44,27 @@ public class UserController {
 
     /////////////////////////////////////////////////////////////////////////
 
-    @PatchMapping("{id}/newPassword/{newPassword}")
+    @PatchMapping("{id}/editPassword/{newPassword}")
     public User editPassword(@PathVariable Integer id, @PathVariable String newPassword) {
         return userService.editPassword(id, newPassword);
     }
 
     /////////////////////////////////////////////////////////////////////////
 
-    @PostMapping("/registerLocal")
+    @PostMapping("/createUser")
     public User registerUser(@RequestBody User user) {
-        return userService.registerLocal(user);
+        return userService.createUser(user);
     }
+
+    @PutMapping("/updateUser")
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public void deleteUser(@PathVariable Integer id) {
+        userService.deleteUser(id);
+    }
+
+
 }

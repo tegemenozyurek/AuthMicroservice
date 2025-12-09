@@ -12,4 +12,21 @@ GET http://localhost:8080/api/v1/users/activeUsers
 GET http://localhost:8080/api/v1/users/inactiveUsers
 
 ### Edit password
-PATCH http://localhost:8080/api/v1/users/{{id}}/newPassword/{{newPassword}}
+PATCH http://localhost:8080/api/v1/users/1/editPassword/0712
+
+### Create User
+POST http://localhost:8080/api/v1/users/createUser
+Content-Type: application/json
+
+{
+  "email": "user1@example.com",
+  "fullName": "John Doe1",
+  "passwordHash": "password123",
+  "googleSub": "12345",
+  "profilePicture": "12345",
+  "isActive": false,
+  "emailVerified": false
+}
+
+### Delete User
+DELETE http://localhost:8080/api/v1/users/deleteUser/3

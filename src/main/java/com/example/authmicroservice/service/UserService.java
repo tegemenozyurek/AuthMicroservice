@@ -21,8 +21,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -53,15 +51,9 @@ public class UserService {
 
     /////////////////////////////////////////////////////////////////////////
 
-    public User registerLocal(User user) {
+    public User createUser(User user) {
         return userRepository.save(user);
     }
-
-    public User registerGoogle(User user) {
-        return user;
-    }
-
-    /////////////////////////////////////////////////////////////////////////
 
     public User updateUser(User user) {
         return userRepository.save(user);
@@ -71,22 +63,4 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-
-
-    // get all users +
-
-    // get user by id +
-    // get user by email +
-
-    // get active users +
-    // get inactive users +
-
-    // edit password +
-
-    // register local
-    // register google
-
-    // update user
-    // delete user
 }
