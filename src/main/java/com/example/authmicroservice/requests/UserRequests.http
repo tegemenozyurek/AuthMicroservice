@@ -27,7 +27,12 @@ Content-Type: application/json
 }
 
 ### Update User
+PUT http://localhost:8080/api/v1/users/updateUser/15
+Content-Type: application/json
 
+{
+  "fullName": "pipi"
+}
 
 ### Delete User
 DELETE http://localhost:8080/api/v1/users/deleteUser/3

@@ -56,8 +56,9 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @PutMapping("/updateUser")
-    public User updateUser(@RequestBody User user) {
+    @PutMapping("/updateUser/{id}")
+    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
+        user.setId(id);
         return userService.updateUser(user);
     }
 
