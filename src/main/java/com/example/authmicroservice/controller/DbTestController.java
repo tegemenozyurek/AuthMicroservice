@@ -1,4 +1,4 @@
-package com.example.authmicroservice;
+package com.example.authmicroservice.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
