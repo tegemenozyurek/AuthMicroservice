@@ -1,0 +1,34 @@
+### Get all userClients
+GET http://localhost:8080/api/v1/user-clients/all
+
+### Get userClient by id
+GET http://localhost:8080/api/v1/user-clients/byId/{{id}}
+
+### Get
+GET http://localhost:8080/api/v1/user-clients/getClientUsers-byClientId/{{clientId}}
+
+### Get
+GET http://localhost:8080/api/v1/user-clients/getUserClients-byUserId/{{userId}}
+
+### Create UserClient
+POST http://localhost:8080/api/v1/user-clients/createUserClient
+Content-Type: application/json
+
+{
+  "userId": 4,
+  "clientId": 1,
+  "role": "owner"
+}
+
+### Edit userClient
+GET http://localhost:8080/api/v1/user-clients/updateUserClient/{{id}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "role": "",
+  "createdAt": ""
+}
+
+### Delete userClient
+GET http://localhost:8080/api/v1/user-clients/deleteUserClient/{{id}}
