@@ -51,6 +51,7 @@ public class AuthClientController {
 
     @PutMapping("/updateAuthClient/{id}")
     public AuthClient updateAuthClient(@PathVariable Integer id, @RequestBody AuthClient authClient){
+        authClient.setId(id);
         return authClientService.updateAuthClient(authClient);
     }
 

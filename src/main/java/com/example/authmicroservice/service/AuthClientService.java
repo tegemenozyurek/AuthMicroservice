@@ -46,7 +46,15 @@ public class AuthClientService {
     }
 
     public AuthClient updateAuthClient(AuthClient authClient){
-        return authClientRepository.save(authClient);
+        AuthClient existing = authClientRepository.findById(authClient.getId())
+                .orElseThrow(() -> new RuntimeException("AuthClient not found"));
+
+        if (authClient.getClientKey() != null) existing.setClientKey(authClient.getClientKey());
+        if (authClient.getName() != null) existing.setName(authClient.getName());
+        if (authClient.getDescription() != null) existing.setDescription(authClient.getDescription());
+        if (authClient.getIsActive() != null) existing.setIsActive(authClient.getIsActive());
+
+        return authClientRepository.save(existing);
     }
 
     public void deleteAuthClient(Integer id){

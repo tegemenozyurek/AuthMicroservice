@@ -13,7 +13,25 @@ GET http://localhost:8080/api/v1/auth-clients/inactiveClients
 
 ### Create authClients
 POST http://localhost:8080/api/v1/auth-clients/createAuthClient
+Content-Type: application/json
+
+{
+  "clientKey": "ati@example.com",
+  "name": "ati",
+  "description": "password123",
+  "isActive": false,
+  "emailVerified": false
+}
+
+
 ### Edit authClients
-PUT http://localhost:8080/api/v1/auth-clients/updateAuthClient/{{id}}
+PUT http://localhost:8080/api/v1/auth-clients/updateAuthClient/6
+Content-Type: application/json
+
+{
+  "description": "music studio"
+}
+
+
 ### Delete authClients
-DELETE http://localhost:8080/api/v1/auth-clients/deleteAuthClient/{{id}}
+DELETE http://localhost:8080/api/v1/auth-clients/deleteAuthClient/5
