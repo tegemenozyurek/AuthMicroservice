@@ -2,9 +2,7 @@ package com.example.authmicroservice.controller;
 
 import com.example.authmicroservice.entity.AuthClient;
 import com.example.authmicroservice.service.AuthClientService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +18,44 @@ public class AuthClientController {
     @GetMapping("/all")
     public List<AuthClient> getAllAuthClients() {
         return authClientService.getAllAuthClients();
+    }
+
+    @GetMapping("/byId/{id}")
+    public AuthClient getAuthClientById(@PathVariable Integer id) {
+        return authClientService.getAuthClientById(id);
+    }
+
+    @GetMapping("/byKey/{clientKey}")
+    public AuthClient getAuthClientByKey(@PathVariable String clientKey) {
+        return authClientService.getAuthClientByKey(clientKey);
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/activeClients")
+    public List<AuthClient> getActiveAuthClients(){
+        return authClientService.getActiveAuthClients();
+    }
+
+    @GetMapping("/inactiveClients")
+    public List<AuthClient> getInactiveAuthClients(){
+        return authClientService.getInactiveAuthClients();
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    @PostMapping("/createAuthClient")
+    public AuthClient createAuthClient(@RequestBody AuthClient authClient){
+        return authClientService.createAuthClient(authClient);
+    }
+
+    @PutMapping("/updateAuthClient/{id}")
+    public AuthClient updateAuthClient(@PathVariable Integer id, @RequestBody AuthClient authClient){
+        return authClientService.updateAuthClient(authClient);
+    }
+
+    @DeleteMapping("/deleteAuthClient/{id}")
+    public void deleteAuthClient(@PathVariable Integer id){
+        authClientService.deleteAuthClient(id);
     }
 }

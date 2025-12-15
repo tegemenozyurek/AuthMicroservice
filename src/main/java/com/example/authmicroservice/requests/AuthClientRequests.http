@@ -1,0 +1,19 @@
+### Get all authClients
+GET http://localhost:8080/api/v1/auth-clients/all
+
+### Get authClient by id
+GET http://localhost:8080/api/v1/auth-clients/byId/1
+### Get authClient by key
+GET http://localhost:8080/api/v1/auth-clients/byKey/beautime_mobile
+
+### Get active authClients
+GET http://localhost:8080/api/v1/auth-clients/activeClients
+### Get inactive authClients
+GET http://localhost:8080/api/v1/auth-clients/inactiveClients
+
+### Create authClients
+POST http://localhost:8080/api/v1/auth-clients/createAuthClient
+### Edit authClients
+PUT http://localhost:8080/api/v1/auth-clients/updateAuthClient/{{id}}
+### Delete authClients
+DELETE http://localhost:8080/api/v1/auth-clients/deleteAuthClient/{{id}}

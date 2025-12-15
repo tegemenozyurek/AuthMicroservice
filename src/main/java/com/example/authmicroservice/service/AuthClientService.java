@@ -21,17 +21,36 @@ public class AuthClientService {
         return authClientRepository.findAll();
     }
 
+    public AuthClient getAuthClientById(Integer id) {
+        return authClientRepository.findById(id).orElse(null);
+    }
 
+    public AuthClient getAuthClientByKey(String clientKey){
+        return authClientRepository.findByClientKey(clientKey);
+    }
 
     /////////////////////////////////////////////////////////////////////////
 
-    //getClientByKey(clientKey)
-    //getClientById(clientId)
-    //getActiveUsers
-    //getInactiveUsers
-    //create
-    //update
-    //edit
-    //delete
+    public List<AuthClient> getActiveAuthClients(){
+        return authClientRepository.findByIsActive(true);
+    }
+
+    public List<AuthClient> getInactiveAuthClients(){
+        return authClientRepository.findByIsActive(false);
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    public AuthClient createAuthClient(AuthClient authClient){
+        return authClientRepository.save(authClient);
+    }
+
+    public AuthClient updateAuthClient(AuthClient authClient){
+        return authClientRepository.save(authClient);
+    }
+
+    public void deleteAuthClient(Integer id){
+        authClientRepository.deleteById(id);
+    }
 
 }
