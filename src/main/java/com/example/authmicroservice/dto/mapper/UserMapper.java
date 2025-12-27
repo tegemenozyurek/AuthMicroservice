@@ -35,7 +35,7 @@ public class UserMapper {
         return User.builder()
                 .email(request.getEmail())
                 .fullName(request.getFullName())
-                .passwordHash(request.getPassword()) // Will be hashed in service
+                .passwordHash(null) // Will be hashed in service
                 .googleSub(request.getGoogleSub())
                 .profilePicture(request.getProfilePicture())
                 .isActive(request.getIsActive() != null ? request.getIsActive() : true)
@@ -54,9 +54,7 @@ public class UserMapper {
         if (request.getFullName() != null) {
             user.setFullName(request.getFullName());
         }
-        if (request.getPassword() != null) {
-            user.setPasswordHash(request.getPassword()); // Will be hashed in service
-        }
+        // Password will be hashed in service layer
         if (request.getGoogleSub() != null) {
             user.setGoogleSub(request.getGoogleSub());
         }

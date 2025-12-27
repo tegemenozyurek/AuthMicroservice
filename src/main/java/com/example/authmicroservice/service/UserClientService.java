@@ -6,6 +6,9 @@ import com.example.authmicroservice.dto.request.UpdateUserClientRequest;
 import com.example.authmicroservice.entity.AuthClient;
 import com.example.authmicroservice.entity.User;
 import com.example.authmicroservice.entity.UserClient;
+import com.example.authmicroservice.exception.AuthClientNotFoundException;
+import com.example.authmicroservice.exception.UserClientNotFoundException;
+import com.example.authmicroservice.exception.UserNotFoundException;
 import com.example.authmicroservice.repository.AuthClientRepository;
 import com.example.authmicroservice.repository.UserClientRepository;
 import com.example.authmicroservice.repository.UserRepository;
@@ -35,7 +38,8 @@ public class UserClientService {
     }
 
     public UserClient getUserClientById(Integer id) {
-        return userClientRepository.findById(id).orElse(null);
+        return userClientRepository.findById(id)
+                .orElseThrow(() -> new UserClientNotFoundException(id));
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -46,10 +50,10 @@ public class UserClientService {
 
     public UserClient createUserClient(CreateUserClientRequest request){
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
         
         AuthClient client = authClientRepository.findById(request.getClientId())
-                .orElseThrow(() -> new RuntimeException("AuthClient not found"));
+                .orElseThrow(() -> new AuthClientNotFoundException(request.getClientId()));
         
         UserClient userClient = userClientMapper.toEntity(request, user, client);
         return userClientRepository.save(userClient);
@@ -57,18 +61,18 @@ public class UserClientService {
 
     public UserClient updateUserClient(Integer id, UpdateUserClientRequest request){
         UserClient existing = userClientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("UserClient not found"));
+                .orElseThrow(() -> new UserClientNotFoundException(id));
 
         User user = null;
         if (request.getUserId() != null) {
             user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
         }
 
         AuthClient client = null;
         if (request.getClientId() != null) {
             client = authClientRepository.findById(request.getClientId())
-                    .orElseThrow(() -> new RuntimeException("AuthClient not found"));
+                    .orElseThrow(() -> new AuthClientNotFoundException(request.getClientId()));
         }
 
         userClientMapper.updateEntityFromRequest(existing, request, user, client);
