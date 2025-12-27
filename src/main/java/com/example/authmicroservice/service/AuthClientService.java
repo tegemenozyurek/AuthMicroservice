@@ -1,6 +1,8 @@
 package com.example.authmicroservice.service;
-//2
 
+import com.example.authmicroservice.dto.mapper.AuthClientMapper;
+import com.example.authmicroservice.dto.request.CreateAuthClientRequest;
+import com.example.authmicroservice.dto.request.UpdateAuthClientRequest;
 import com.example.authmicroservice.entity.AuthClient;
 import com.example.authmicroservice.repository.AuthClientRepository;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,11 @@ import java.util.List;
 @Service
 public class AuthClientService {
     private final AuthClientRepository authClientRepository;
+    private final AuthClientMapper authClientMapper;
 
-    public AuthClientService(AuthClientRepository authClientRepository) {
+    public AuthClientService(AuthClientRepository authClientRepository, AuthClientMapper authClientMapper) {
         this.authClientRepository = authClientRepository;
+        this.authClientMapper = authClientMapper;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -41,24 +45,20 @@ public class AuthClientService {
 
     /////////////////////////////////////////////////////////////////////////
 
-    public AuthClient createAuthClient(AuthClient authClient){
+    public AuthClient createAuthClient(CreateAuthClientRequest request){
+        AuthClient authClient = authClientMapper.toEntity(request);
         return authClientRepository.save(authClient);
     }
 
-    public AuthClient updateAuthClient(AuthClient authClient){
-        AuthClient existing = authClientRepository.findById(authClient.getId())
+    public AuthClient updateAuthClient(Integer id, UpdateAuthClientRequest request){
+        AuthClient existing = authClientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("AuthClient not found"));
 
-        if (authClient.getClientKey() != null) existing.setClientKey(authClient.getClientKey());
-        if (authClient.getName() != null) existing.setName(authClient.getName());
-        if (authClient.getDescription() != null) existing.setDescription(authClient.getDescription());
-        if (authClient.getIsActive() != null) existing.setIsActive(authClient.getIsActive());
-
+        authClientMapper.updateEntityFromRequest(existing, request);
         return authClientRepository.save(existing);
     }
 
     public void deleteAuthClient(Integer id){
         authClientRepository.deleteById(id);
     }
-
 }

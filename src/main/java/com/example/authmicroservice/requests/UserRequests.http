@@ -31,7 +31,8 @@ PUT http://localhost:8080/api/v1/users/updateUser/5
 Content-Type: application/json
 
 {
-  "email": "useredited@example.com"
+  "email": "useredited@example.com",
+  "fullName": "dkkdkd"
 }
 
 ### Delete User
