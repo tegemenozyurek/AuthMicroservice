@@ -1,59 +1,56 @@
 package com.example.authmicroservice.controller;
 
-import com.example.authmicroservice.entity.AuthClient;
-import com.example.authmicroservice.entity.User;
-import com.example.authmicroservice.entity.UserClient;
+import com.example.authmicroservice.dto.mapper.UserClientMapper;
+import com.example.authmicroservice.dto.request.CreateUserClientRequest;
+import com.example.authmicroservice.dto.request.UpdateUserClientRequest;
+import com.example.authmicroservice.dto.response.UserClientResponse;
 import com.example.authmicroservice.service.UserClientService;
-import org.springframework.stereotype.Repository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user-clients")
 public class UserClientController {
-    public UserClientService userClientService;
+    private final UserClientService userClientService;
+    private final UserClientMapper userClientMapper;
 
-    public UserClientController(UserClientService userClientService) {
+    public UserClientController(UserClientService userClientService, UserClientMapper userClientMapper) {
         this.userClientService = userClientService;
+        this.userClientMapper = userClientMapper;
     }
 
     @GetMapping("/all")
-    public List<UserClient> getAllUserClients() {
-        return userClientService.getAllUserClients();
+    public List<UserClientResponse> getAllUserClients() {
+        return userClientService.getAllUserClients().stream()
+                .map(userClientMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/byId/{id}")
-    public UserClient getUserClientById(Integer id) {
-        return userClientService.getUserClientById(id);
+    public UserClientResponse getUserClientById(@PathVariable Integer id) {
+        return userClientMapper.toResponse(userClientService.getUserClientById(id));
     }
 
     /////////////////////////////////////////////////////////////////////////
 
-    @GetMapping("/getClientUsers-byClientId/{clientId}")
-    public List<User> getClientUsers(Integer clientId) {
-        return userClientService.getClientUsers(clientId);
-    }
 
-    @GetMapping("/getUserClients-byUserId/{userId}")
-    public List<AuthClient> getUserClients(Integer userId) {
-        return userClientService.getUserClients(userId);
-    }
 
     /////////////////////////////////////////////////////////////////////////
 
     @PostMapping("/createUserClient")
-    public UserClient createUserClient(@RequestBody UserClient userClient) {
-        return userClientService.createUserClient(userClient);
+    public UserClientResponse createUserClient(@Valid @RequestBody CreateUserClientRequest request) {
+        return userClientMapper.toResponse(userClientService.createUserClient(request));
     }
 
-    @GetMapping("/updateUserClient/{id}")
-    public UserClient updateUserClient(@PathVariable Integer id, @RequestBody UserClient userClient) {
-        userClient.setId(id);
-        return userClientService.updateUserClient(userClient);
+    @PutMapping("/updateUserClient/{id}")
+    public UserClientResponse updateUserClient(@PathVariable Integer id, @Valid @RequestBody UpdateUserClientRequest request) {
+        return userClientMapper.toResponse(userClientService.updateUserClient(id, request));
     }
 
-    @GetMapping("/deleteUserClient/{id}")
+    @DeleteMapping("/deleteUserClient/{id}")
     public void deleteUserClient(@PathVariable Integer id) {
         userClientService.deleteUserClient(id);
     }

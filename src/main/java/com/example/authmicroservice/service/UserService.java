@@ -1,18 +1,23 @@
 package com.example.authmicroservice.service;
+
+import com.example.authmicroservice.dto.mapper.UserMapper;
+import com.example.authmicroservice.dto.request.CreateUserRequest;
+import com.example.authmicroservice.dto.request.UpdateUserRequest;
 import com.example.authmicroservice.entity.User;
 import com.example.authmicroservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//1
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -51,28 +56,20 @@ public class UserService {
 
     /////////////////////////////////////////////////////////////////////////
 
-    public User createUser(User user) {
+    public User createUser(CreateUserRequest request) {
+        User user = userMapper.toEntity(request);
         return userRepository.save(user);
     }
 
-    public User updateUser(User user) {
-        User existing = userRepository.findById(user.getId())
+    public User updateUser(Integer id, UpdateUserRequest request) {
+        User existing = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (user.getEmail() != null) existing.setEmail(user.getEmail());
-        if (user.getFullName() != null) existing.setFullName(user.getFullName());
-        if (user.getPasswordHash() != null) existing.setPasswordHash(user.getPasswordHash());
-        if (user.getGoogleSub() != null) existing.setGoogleSub(user.getGoogleSub());
-        if (user.getProfilePicture() != null) existing.setProfilePicture(user.getProfilePicture());
-        if (user.getIsActive() != null) existing.setIsActive(user.getIsActive());
-        if (user.getEmailVerified() != null) existing.setEmailVerified(user.getEmailVerified());
-        if (user.getLastLoginAt() != null) existing.setLastLoginAt(user.getLastLoginAt());
-
+        userMapper.updateEntityFromRequest(existing, request);
         return userRepository.save(existing);
     }
 
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
-
 }

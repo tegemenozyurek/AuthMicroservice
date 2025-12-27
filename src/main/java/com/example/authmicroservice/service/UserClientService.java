@@ -1,23 +1,33 @@
 package com.example.authmicroservice.service;
 
+import com.example.authmicroservice.dto.mapper.UserClientMapper;
+import com.example.authmicroservice.dto.request.CreateUserClientRequest;
+import com.example.authmicroservice.dto.request.UpdateUserClientRequest;
 import com.example.authmicroservice.entity.AuthClient;
 import com.example.authmicroservice.entity.User;
 import com.example.authmicroservice.entity.UserClient;
+import com.example.authmicroservice.repository.AuthClientRepository;
 import com.example.authmicroservice.repository.UserClientRepository;
 import com.example.authmicroservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserClientService {
     private final UserClientRepository userClientRepository;
     private final UserRepository userRepository;
+    private final AuthClientRepository authClientRepository;
+    private final UserClientMapper userClientMapper;
 
-    public UserClientService(UserClientRepository userClientRepository, UserRepository userRepository) {
+    public UserClientService(UserClientRepository userClientRepository, 
+                            UserRepository userRepository,
+                            AuthClientRepository authClientRepository,
+                            UserClientMapper userClientMapper) {
         this.userClientRepository = userClientRepository;
         this.userRepository = userRepository;
+        this.authClientRepository = authClientRepository;
+        this.userClientMapper = userClientMapper;
     }
 
     public List<UserClient> getAllUserClients() {
@@ -30,47 +40,42 @@ public class UserClientService {
 
     /////////////////////////////////////////////////////////////////////////
 
-    // List every user of a client
-    public List<User> getClientUsers(Integer clientId) {
-        return userClientRepository.findByClient_Id(clientId)
-                .stream()
-                .map(UserClient::getUser)
-                .collect(Collectors.toList());
-    }
 
-    // List every client of a user
-    public List<AuthClient> getUserClients(Integer userId) {
-        return userClientRepository.findByUser_Id(userId)
-                .stream()
-                .map(UserClient::getClient)
-                .collect(Collectors.toList());
-    }
 
     /////////////////////////////////////////////////////////////////////////
 
-    public UserClient createUserClient(UserClient userClient){
+    public UserClient createUserClient(CreateUserClientRequest request){
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        AuthClient client = authClientRepository.findById(request.getClientId())
+                .orElseThrow(() -> new RuntimeException("AuthClient not found"));
+        
+        UserClient userClient = userClientMapper.toEntity(request, user, client);
         return userClientRepository.save(userClient);
     }
 
-    public UserClient updateUserClient(UserClient userClient){
-        UserClient existing = userClientRepository.findById(userClient.getId())
+    public UserClient updateUserClient(Integer id, UpdateUserClientRequest request){
+        UserClient existing = userClientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("UserClient not found"));
 
-        if (userClient.getUser() != null) {
-            existing.setUser(userClient.getUser());
-        }
-        if (userClient.getClient() != null) {
-            existing.setClient(userClient.getClient());
-        }
-        if (userClient.getRole() != null) {
-            existing.setRole(userClient.getRole());
+        User user = null;
+        if (request.getUserId() != null) {
+            user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
+        AuthClient client = null;
+        if (request.getClientId() != null) {
+            client = authClientRepository.findById(request.getClientId())
+                    .orElseThrow(() -> new RuntimeException("AuthClient not found"));
+        }
+
+        userClientMapper.updateEntityFromRequest(existing, request, user, client);
         return userClientRepository.save(existing);
     }
 
     public void deleteUserClient(Integer id){
         userClientRepository.deleteById(id);
     }
-
 }
